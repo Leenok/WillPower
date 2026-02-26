@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Тренировки</title>
+
+</head>
+<body>
+    <h2>Тренировки</h2>
+    <div class="container">
+        <ul>
+        {% for element in workouts %} 
+        <li>{{element}}</li>
+        <p>{{element.notes}}</p>
+        <p>{{element.feeling}}</p>
+        {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

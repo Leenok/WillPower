@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Главная</title>
+
+</head>
+<body>
+    <h2>Спортивный дневник</h2>
+    <div class="container">
+    {% if user.is_authenticated %}
+        <p>Привет, {{ user.username }}!</p>
+        {% comment %} <a href="{% url 'profile' %}">Мой профиль</a> {% endcomment %}
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">
+                    Выйти
+                </button>
+            </form>
+        {% endif %}
+    {% else %}
+        <a href="{% url 'login' %}" class="btn">Войти снова</a>
+    {% endif %}
+    
+
+    </div>
+
+    <div class="container">
+        <h2>Новости</h2>
+        <ul>
+            <li>Первая</li>
+            <li>Вторая</li>
+            <li>Итоги</li>
+        </ul>
+    </div>
+</body>
+</html>
