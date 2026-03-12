@@ -12,34 +12,14 @@ from .forms import WorkoutForm, WorkoutExerciseForm
 def home(request):
     return render(request, 'main/home.html')
 
-@login_required
-def profile(request):
-    """Страница профиля (только для авторизованных)"""
-    return render(request, 'profile.html', {'user': request.user})
-
 # @login_required
-# def logout(request):
-
-#     return render(request, 'main/home.html')
-
-def register(request):
-    """Регистрация нового пользователя"""
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  # Автоматический вход после регистрации
-            messages.success(request, 'Регистрация прошла успешно!')
-            return redirect('home')  # Перенаправление на главную
-        else:
-            messages.error(request, 'Исправьте ошибки в форме')
-    else:
-        form = UserCreationForm()
-    
-    return render(request, 'registration/register.html', {'form': form})
+# def profile(request):
+#     """Страница профиля (только для авторизованных)"""
+#     return render(request, 'profile.html', {'user': request.user})
 
 
-@login_required
+
+@login_required(login_url='/accounts/login/')
 def workout_list(request):
     workouts = Workout.objects.filter(user=request.user).order_by('-date')
     return render(request, 'core/workout_list.html', {'workouts': workouts})
@@ -59,42 +39,42 @@ def add_workout(request):
     
     return render(request, 'core/add_workout.html', {'form': form})
 
-@login_required
-def add_exercises(request, workout_id):
-    workout = Workout.objects.get(id=workout_id, user=request.user)
-    exercises = Exercise.objects.all()
+# @login_required
+# def add_exercises(request, workout_id):
+#     workout = Workout.objects.get(id=workout_id, user=request.user)
+#     exercises = Exercise.objects.all()
     
-    if request.method == 'POST':
-        # Обработка добавления упражнений
-        for key, value in request.POST.items():
-            if key.startswith('exercise_'):
-                exercise_id = key.replace('exercise_', '')
-                sets = request.POST.get(f'sets_{exercise_id}')
-                reps = request.POST.get(f'reps_{exercise_id}')
-                weight = request.POST.get(f'weight_{exercise_id}')
+#     if request.method == 'POST':
+#         # Обработка добавления упражнений
+#         for key, value in request.POST.items():
+#             if key.startswith('exercise_'):
+#                 exercise_id = key.replace('exercise_', '')
+#                 sets = request.POST.get(f'sets_{exercise_id}')
+#                 reps = request.POST.get(f'reps_{exercise_id}')
+#                 weight = request.POST.get(f'weight_{exercise_id}')
                 
-                if sets and reps:
-                    WorkoutExercise.objects.create(
-                        workout=workout,
-                        exercise_id=exercise_id,
-                        sets=sets,
-                        reps=reps,
-                        weight=weight or 0
-                    )
-        return redirect('workout_detail', workout_id=workout.id)
+#                 if sets and reps:
+#                     WorkoutExercise.objects.create(
+#                         workout=workout,
+#                         exercise_id=exercise_id,
+#                         sets=sets,
+#                         reps=reps,
+#                         weight=weight or 0
+#                     )
+#         return redirect('workout_detail', workout_id=workout)
     
-    return render(request, 'core/add_exercises.html', {
-        'workout': workout,
-        'exercises': exercises
-    })
+#     return render(request, 'core/add_exercises.html', {
+#         'workout': workout,
+#         'exercises': exercises
+#     })
 
 
-@login_required
-def profile(request):
-    """Страница профиля (только для авторизованных)"""
-    return render(request, 'profile.html', {'user': request.user})
+# @login_required
+# def profile(request):
+#     """Страница профиля (только для авторизованных)"""
+#     return render(request, 'profile.html', {'user': request.user})
 
-@login_required(login_url='/custom-login/')  # Свой URL для входа
-def dashboard(request):
-    """Панель управления"""
-    return render(request, 'dashboard.html')
+# @login_required(login_url='/custom-login/')  # Свой URL для входа
+# def dashboard(request):
+#     """Панель управления"""
+#     return render(request, 'dashboard.html')
