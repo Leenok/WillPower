@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Тренировки{% endblock %}
+
+{% block content %}
+    <div class="container pt-2">
+        <ul>
+            {% for element in workouts %} 
+                <li>{{element}}</li>
+                <p>{{element.notes}}</p>
+                <p>{{element.feeling}}</p>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
